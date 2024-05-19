@@ -1,25 +1,30 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersController } from './infrastructure/controllers/user.controller';
-import { UsersService } from './infrastructure/controllers/user.service';
+import { CreateUserController } from './infrastructure/controllers/user.controller';
+
 import {
   Address,
   AddressSchema,
 } from './infrastructure/schemas/address.schema';
-import { City, CitySchema } from './infrastructure/schemas/city.schema';
+
 import { State, StateSchema } from './infrastructure/schemas/state.schema';
 import { User, UserSchema } from './infrastructure/schemas/user.schema';
+import { CreateUserCommand } from './domain/commands/create-user-command';
+import { UserRepository } from './domain/repositories/user-repository';
+import { MongodbUserRepository } from './infrastructure/repositories/mongodb-user-repository';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Address.name, schema: AddressSchema },
-      { name: City.name, schema: CitySchema },
       { name: State.name, schema: StateSchema },
     ]),
   ],
-  controllers: [UsersController],
-  providers: [UsersService],
+  controllers: [CreateUserController],
+  providers: [
+    CreateUserCommand,
+    { provide: UserRepository, useClass: MongodbUserRepository },
+  ],
 })
 export class UsersModule {}
