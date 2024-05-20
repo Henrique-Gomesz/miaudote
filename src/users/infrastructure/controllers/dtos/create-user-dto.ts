@@ -4,11 +4,14 @@ import {
   IsString,
   MaxLength,
   Validate,
+  ValidateNested,
 } from 'class-validator';
 import { Document } from 'src/common/entities/document';
 import { User } from 'src/users/domain/entities/user';
 import { DocumentValidation } from '../validations/document-validation';
 import { ApiProperty } from '@nestjs/swagger';
+import { CreateUserAddressDto } from './create-user-address-dto';
+import { Type } from 'class-transformer';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -45,6 +48,11 @@ export class CreateUserDto {
   @IsDateString()
   birthday: string;
 
+  @ApiProperty({ type: CreateUserAddressDto })
+  @ValidateNested()
+  @Type(() => CreateUserAddressDto)
+  address: CreateUserAddressDto;
+
   public static toDomain(createUserDto: CreateUserDto): User {
     const user = new User(
       createUserDto.name,
@@ -55,6 +63,7 @@ export class CreateUserDto {
       createUserDto.about,
       createUserDto.image,
       new Date(createUserDto.birthday),
+      [CreateUserAddressDto.toDomain(createUserDto.address)],
     );
 
     return user;

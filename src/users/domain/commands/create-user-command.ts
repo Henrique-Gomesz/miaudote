@@ -9,7 +9,7 @@ export class CreateUserCommand {
 
   public onError: () => void = noop;
 
-  public constructor(private userRepository: UserRepository) {}
+  public constructor(private readonly userRepository: UserRepository) {}
 
   public async execute(user: User): Promise<void> {
     return await this.userRepository.saveUser(user, {

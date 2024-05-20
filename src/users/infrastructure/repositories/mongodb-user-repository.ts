@@ -17,8 +17,8 @@ export class MongodbUserRepository extends UserRepository {
   }
   async saveUser(user: User, listeners: SaveUserListeners): Promise<void> {
     try {
-      const createdCat = new this.userModel(user);
-      await createdCat.save();
+      const createUser = new this.userModel(user);
+      await createUser.save();
       return listeners.onSuccess();
     } catch (error) {
       Logger.log(JSON.stringify(error));

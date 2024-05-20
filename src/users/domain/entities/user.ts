@@ -1,4 +1,5 @@
 import { Document } from 'src/common/entities/document';
+import { Address } from './address';
 
 export class User {
   public constructor(
@@ -10,5 +11,6 @@ export class User {
     public about: string,
     public image: string,
     public birthday: Date,
+    public addresses: Address[],
   ) {}
 }

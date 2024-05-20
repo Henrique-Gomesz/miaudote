@@ -1,22 +1,15 @@
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  HttpStatus,
-  Post,
-  Res,
-} from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { ApiResponse } from '@nestjs/swagger';
+import { Response } from 'express';
 import { CreateUserCommand } from 'src/users/domain/commands/create-user-command';
 import { CreateUserDto } from './dtos/create-user-dto';
 import { userErrors } from './user-errors';
-import { ApiResponse } from '@nestjs/swagger';
-import { Response } from 'express';
 
-@Controller('/users')
+@Controller()
 export class CreateUserController {
   constructor(private readonly createUserCommand: CreateUserCommand) {}
 
-  @Post()
+  @Post('/users')
   @ApiResponse({
     status: 201,
     description: 'successfully saved user',
