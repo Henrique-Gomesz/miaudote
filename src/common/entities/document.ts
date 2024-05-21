@@ -54,7 +54,7 @@ export class Document {
 
   public formatWithMask(): string {
     // Remove non-numeric characters
-    let document = this.document.replace(/\D/g, '');
+    const document = this.document.replace(/\D/g, '');
 
     // Check if the CPF has 11 digits
     if (document.length !== 11) {

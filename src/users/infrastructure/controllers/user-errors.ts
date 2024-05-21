@@ -1,5 +1,10 @@
 export const userErrors = {
   createUserError: {
-    message: 'create-user-error',
+    code: 'create-user-generic-error',
+    message: 'something went wrong',
+  },
+  createUserAddressError: {
+    code: 'create-user-address-error',
+    message: "something with the address it's incorrect",
   },
 };

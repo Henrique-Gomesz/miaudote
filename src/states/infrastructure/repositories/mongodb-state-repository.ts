@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { none, Option, some } from 'fp-ts/lib/Option';
 import { Model } from 'mongoose';
 import { State } from 'src/states/domain/entities/state';
 import { StateRepository } from 'src/states/domain/repositories/states-repository';
@@ -14,6 +15,14 @@ export class MongodbStateRepository extends StateRepository {
     @InjectModel(StateModel.name) private stateModel: Model<StateModel>,
   ) {
     super();
+  }
+
+  public async getStateByName(name: string): Promise<Option<State>> {
+    const state = await this.stateModel.findOne({ name: name });
+
+    if (state) return some(this.toDomain(state));
+
+    return none;
   }
 
   public async listAll(): Promise<State[]> {

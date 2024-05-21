@@ -22,8 +22,9 @@ export class CreateUserController {
     @Res() response: Response,
     @Body() user: CreateUserDto,
   ): Promise<void> {
-    this.createUserCommand.onError = this.onError(response);
     this.createUserCommand.onSuccess = this.onSuccess(response);
+    this.createUserCommand.onError = this.onError(response);
+    this.createUserCommand.onAddressError = this.onAddressError(response);
 
     await this.createUserCommand.execute(CreateUserDto.toDomain(user));
   }
@@ -39,6 +40,14 @@ export class CreateUserController {
       return res
         .status(HttpStatus.BAD_REQUEST)
         .send(userErrors.createUserError);
+    };
+  }
+
+  private onAddressError(res: Response): CreateUserCommand['onAddressError'] {
+    return () => {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .send(userErrors.createUserAddressError);
     };
   }
 }

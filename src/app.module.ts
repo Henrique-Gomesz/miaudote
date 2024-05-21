@@ -6,7 +6,7 @@ import { MongoModule } from './mongo.module';
 import { StatesModule } from './states/states.module';
 
 @Module({
-  imports: [MongoModule, UsersModule, StatesModule],
+  imports: [MongoModule, StatesModule, UsersModule],
   controllers: [AppController],
   providers: [AppService],
 })

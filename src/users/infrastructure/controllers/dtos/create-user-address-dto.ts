@@ -20,7 +20,7 @@ export class CreateUserAddressDto {
 
   @ApiProperty()
   @IsString()
-  @MaxLength(80)
+  @MaxLength(8)
   postalCode: string;
 
   @ApiProperty()
