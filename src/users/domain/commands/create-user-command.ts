@@ -41,10 +41,9 @@ export class CreateUserCommand {
     const userState = await this.stateRepository.getStateByName(
       address.value.city,
     );
-    //fix state error
+
     if (isNone(userState)) return false;
 
-    console.log(userState.value);
     const userCity = userState.value.getCityByName(address.value.city);
 
     if (isNone(userCity)) return false;

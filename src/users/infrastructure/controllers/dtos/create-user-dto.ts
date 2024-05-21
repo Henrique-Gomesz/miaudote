@@ -12,6 +12,7 @@ import { DocumentValidation } from '../validations/document-validation';
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateUserAddressDto } from './create-user-address-dto';
 import { Type } from 'class-transformer';
+import { CredentialValidation } from '../validations/credential-validation';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -25,6 +26,7 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsString()
+  @Validate(CredentialValidation)
   password: string;
 
   @ApiProperty()

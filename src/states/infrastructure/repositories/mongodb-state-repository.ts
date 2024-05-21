@@ -18,7 +18,7 @@ export class MongodbStateRepository extends StateRepository {
   }
 
   public async getStateByName(name: string): Promise<Option<State>> {
-    const state = await this.stateModel.findOne({ name: name });
+    const state = await this.stateModel.findOne({name} );
 
     if (state) return some(this.toDomain(state));
 
