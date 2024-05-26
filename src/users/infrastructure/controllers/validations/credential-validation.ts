@@ -3,7 +3,7 @@ import {
   ValidatorConstraintInterface,
 } from 'class-validator';
 import { isEmpty } from 'lodash';
-import { Credential } from 'src/common/credential';
+import { Credential } from 'src/common/domain/entities/credential';
 
 @ValidatorConstraint({ async: false })
 export class CredentialValidation implements ValidatorConstraintInterface {

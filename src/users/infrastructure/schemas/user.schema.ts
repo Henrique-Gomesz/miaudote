@@ -21,11 +21,11 @@ export class User {
   @Prop({ required: true })
   phone: string;
 
-  @Prop({ required: true })
-  about: string;
+  @Prop({ required: false })
+  about?: string;
 
-  @Prop({ required: true })
-  image: string;
+  @Prop({ required: false })
+  image?: string;
 
   @Prop({ type: Date, required: true })
   birthday: Date;

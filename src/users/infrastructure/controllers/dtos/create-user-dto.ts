@@ -1,23 +1,25 @@
 import {
   IsDateString,
   IsEmail,
+  IsPhoneNumber,
   IsString,
   MaxLength,
   Validate,
   ValidateNested,
 } from 'class-validator';
-import { Document } from 'src/common/entities/document';
+import { Document } from 'src/common/domain/entities/document';
 import { User } from 'src/users/domain/entities/user';
 import { DocumentValidation } from '../validations/document-validation';
 import { ApiProperty } from '@nestjs/swagger';
 import { CreateUserAddressDto } from './create-user-address-dto';
 import { Type } from 'class-transformer';
 import { CredentialValidation } from '../validations/credential-validation';
+import { BirthdayValidation } from '../validations/birthday-validation';
 
 export class CreateUserDto {
   @ApiProperty()
   @IsString()
-  @MaxLength(80)
+  @MaxLength(120)
   name: string;
 
   @ApiProperty()
@@ -35,19 +37,12 @@ export class CreateUserDto {
 
   @ApiProperty()
   @IsString()
+  @IsPhoneNumber('BR')
   phone: string;
 
   @ApiProperty()
-  @IsString()
-  @MaxLength(520)
-  about: string;
-
-  @ApiProperty()
-  @IsString()
-  image: string;
-
-  @ApiProperty()
   @IsDateString()
+  @Validate(BirthdayValidation)
   birthday: string;
 
   @ApiProperty({ type: CreateUserAddressDto })
@@ -62,8 +57,6 @@ export class CreateUserDto {
       createUserDto.password,
       createUserDto.email,
       createUserDto.phone,
-      createUserDto.about,
-      createUserDto.image,
       new Date(createUserDto.birthday),
       [CreateUserAddressDto.toDomain(createUserDto.address)],
     );

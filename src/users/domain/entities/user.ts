@@ -1,4 +1,4 @@
-import { Document } from 'src/common/entities/document';
+import { Document } from 'src/common/domain/entities/document';
 import { Address } from './address';
 import { Option, some, none } from 'fp-ts/lib/Option';
 
@@ -9,10 +9,10 @@ export class User {
     public password: string,
     public email: string,
     public phone: string,
-    public about: string,
-    public image: string,
     public birthday: Date,
     public addresses: Address[],
+    public about?: string,
+    public image?: string,
   ) {}
 
   public getMainAddress(): Option<Address> {
