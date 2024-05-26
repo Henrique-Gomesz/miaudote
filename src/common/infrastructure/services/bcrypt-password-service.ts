@@ -8,10 +8,7 @@ export class BcryptPasswordService extends PasswordService {
 
     return hashedPassword;
   }
-  public async comparePasswords(
-    plainPassword: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
+  public async comparePasswords(plainPassword: string, hashedPassword: string): Promise<boolean> {
     const passwordMatch = await bcrypt.compare(plainPassword, hashedPassword);
 
     return passwordMatch;

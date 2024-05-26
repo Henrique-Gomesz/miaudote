@@ -22,9 +22,7 @@ export class CreateUserCommand {
   ) {}
 
   public async execute(user: User): Promise<void> {
-    const isAddressValid = await this.validateUserAddress(
-      user.getMainAddress(),
-    );
+    const isAddressValid = await this.validateUserAddress(user.getMainAddress());
 
     if (!isAddressValid) return this.onAddressError();
 
@@ -36,14 +34,10 @@ export class CreateUserCommand {
     });
   }
 
-  private async validateUserAddress(
-    address: Option<Address>,
-  ): Promise<boolean> {
+  private async validateUserAddress(address: Option<Address>): Promise<boolean> {
     if (isNone(address)) return false;
 
-    const userState = await this.stateRepository.getStateByName(
-      address.value.state,
-    );
+    const userState = await this.stateRepository.getStateByName(address.value.state);
 
     if (isNone(userState)) return false;
 

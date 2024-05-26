@@ -42,9 +42,7 @@ export class Credential {
           .join('')}]`,
       ).test(this.credential)
     ) {
-      errors.push(
-        `A senha deve conter pelo menos um caractere especial: ${SPECIAL_CHARACTERS}`,
-      );
+      errors.push(`A senha deve conter pelo menos um caractere especial: ${SPECIAL_CHARACTERS}`);
     }
 
     return errors;

@@ -2,10 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CreateUserController } from './infrastructure/controllers/create-user.controller';
 
-import {
-  Address,
-  AddressSchema,
-} from './infrastructure/schemas/address.schema';
+import { Address, AddressSchema } from './infrastructure/schemas/address.schema';
 
 import { CreateUserCommand } from './domain/commands/create-user-command';
 import { UserRepository } from './domain/repositories/user-repository';
@@ -22,9 +19,6 @@ import { User, UserSchema } from './infrastructure/schemas/user.schema';
     ]),
   ],
   controllers: [CreateUserController],
-  providers: [
-    CreateUserCommand,
-    { provide: UserRepository, useClass: MongodbUserRepository },
-  ],
+  providers: [CreateUserCommand, { provide: UserRepository, useClass: MongodbUserRepository }],
 })
 export class UsersModule {}

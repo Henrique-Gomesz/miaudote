@@ -18,10 +18,7 @@ export class CreateUserController {
     status: 400,
     description: 'something went wrong',
   })
-  async createUser(
-    @Res() response: Response,
-    @Body() user: CreateUserDto,
-  ): Promise<void> {
+  async createUser(@Res() response: Response, @Body() user: CreateUserDto): Promise<void> {
     this.createUserCommand.onSuccess = this.onSuccess(response);
     this.createUserCommand.onError = this.onError(response);
     this.createUserCommand.onAddressError = this.onAddressError(response);
@@ -37,17 +34,13 @@ export class CreateUserController {
 
   private onError(res: Response): CreateUserCommand['onError'] {
     return () => {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .send(userErrors.createUserError);
+      return res.status(HttpStatus.BAD_REQUEST).send(userErrors.createUserError);
     };
   }
 
   private onAddressError(res: Response): CreateUserCommand['onAddressError'] {
     return () => {
-      return res
-        .status(HttpStatus.BAD_REQUEST)
-        .send(userErrors.createUserAddressError);
+      return res.status(HttpStatus.BAD_REQUEST).send(userErrors.createUserAddressError);
     };
   }
 }

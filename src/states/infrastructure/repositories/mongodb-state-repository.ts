@@ -4,16 +4,11 @@ import { none, Option, some } from 'fp-ts/lib/Option';
 import { Model } from 'mongoose';
 import { State } from 'src/states/domain/entities/state';
 import { StateRepository } from 'src/states/domain/repositories/states-repository';
-import {
-  StateDocument,
-  State as StateModel,
-} from 'src/states/infrastructure/schemas/state-schema';
+import { StateDocument, State as StateModel } from 'src/states/infrastructure/schemas/state-schema';
 
 @Injectable()
 export class MongodbStateRepository extends StateRepository {
-  public constructor(
-    @InjectModel(StateModel.name) private stateModel: Model<StateModel>,
-  ) {
+  public constructor(@InjectModel(StateModel.name) private stateModel: Model<StateModel>) {
     super();
   }
 

@@ -13,9 +13,7 @@ const StateRepositoryProvider: Provider = {
 
 @Global()
 @Module({
-  imports: [
-    MongooseModule.forFeature([{ name: State.name, schema: StateSchema }]),
-  ],
+  imports: [MongooseModule.forFeature([{ name: State.name, schema: StateSchema }])],
   controllers: [ListStatesController],
   providers: [ListStatesCommand, StateRepositoryProvider],
   exports: [StateRepositoryProvider],
