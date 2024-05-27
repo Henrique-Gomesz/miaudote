@@ -17,9 +17,8 @@ export class JwtAuthService extends AuthService {
       await this.jwtService.verifyAsync(token);
       return true;
     } catch (error) {
-      Logger.log(error)
-      return false
+      Logger.log(error);
+      return false;
     }
-  
   }
 }

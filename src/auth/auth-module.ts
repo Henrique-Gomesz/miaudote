@@ -24,7 +24,7 @@ const AuthServiceProvider = {
           algorithm: 'HS256',
           expiresIn: '1hr',
           issuer: 'miaudote-service',
-          audience:'mobile-users'
+          audience: 'mobile-users',
         },
         secret: configService.getOrThrow(Env.JWT_SECRET),
       }),
@@ -35,8 +35,6 @@ const AuthServiceProvider = {
 })
 export class AuthModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthorizationMiddleware)
-      .forRoutes('login');
+    consumer.apply(AuthorizationMiddleware).forRoutes('login');
   }
 }
