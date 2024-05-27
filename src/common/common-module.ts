@@ -19,6 +19,7 @@ const BcryptProvider = {
         MONGO_PASSWORD: Joi.string().required(),
         MONGO_DATABASE: Joi.string().required(),
         MONGO_HOST: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
       }),
     }),
   ],

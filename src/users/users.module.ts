@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CreateUserController } from './infrastructure/controllers/create-user.controller';
 
@@ -10,6 +10,9 @@ import { MongodbUserRepository } from './infrastructure/repositories/mongodb-use
 import { State, StateSchema } from './infrastructure/schemas/state.schema';
 import { User, UserSchema } from './infrastructure/schemas/user.schema';
 
+const UserRepositoryProvider = { provide: UserRepository, useClass: MongodbUserRepository };
+
+@Global()
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -19,6 +22,7 @@ import { User, UserSchema } from './infrastructure/schemas/user.schema';
     ]),
   ],
   controllers: [CreateUserController],
-  providers: [CreateUserCommand, { provide: UserRepository, useClass: MongodbUserRepository }],
+  providers: [CreateUserCommand, UserRepositoryProvider],
+  exports: [UserRepositoryProvider],
 })
 export class UsersModule {}

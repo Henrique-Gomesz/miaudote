@@ -15,6 +15,7 @@ import { CreateUserAddressDto } from './create-user-address-dto';
 import { Type } from 'class-transformer';
 import { CredentialValidation } from '../validations/credential-validation';
 import { BirthdayValidation } from '../validations/birthday-validation';
+import { none } from 'fp-ts/lib/Option';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -59,6 +60,9 @@ export class CreateUserDto {
       createUserDto.phone,
       new Date(createUserDto.birthday),
       [CreateUserAddressDto.toDomain(createUserDto.address)],
+      none,
+      none,
+      none,
     );
 
     return user;

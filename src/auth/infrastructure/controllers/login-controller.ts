@@ -8,7 +8,7 @@ import { LoginDto } from '../dtos/login-dto';
 @Controller()
 export class LoginController {
   public constructor(private readonly loginCommand: LoginCommand) {}
-  @Post('/auth')
+  @Post('/login')
   @ApiResponse({
     status: 200,
     description:
@@ -19,11 +19,10 @@ export class LoginController {
     description: 'UNAUTHORIZED',
   })
   public async login(@Res() response: Response, @Body() credentials: LoginDto) {
-    console.log(credentials);
     this.loginCommand.onSuccess = this.onSuccess(response);
     this.loginCommand.onError = this.onError(response);
 
-    await this.loginCommand.execute();
+    await this.loginCommand.execute(LoginDto.toDomain(credentials));
   }
 
   public onSuccess(res: Response): LoginCommand['onSuccess'] {

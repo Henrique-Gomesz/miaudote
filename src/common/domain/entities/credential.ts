@@ -6,7 +6,7 @@ const REQUIRE_DIGIT = true;
 const REQUIRE_SPECIAL_CHARACTER = true;
 const SPECIAL_CHARACTERS = '!@#$%&';
 
-export class Credential {
+export class Password {
   public constructor(public credential: string) {
     this.credential = credential;
   }
@@ -49,7 +49,7 @@ export class Credential {
   }
 
   static validateStatic(password: string): string[] {
-    const credential = new Credential(password);
+    const credential = new Password(password);
 
     return credential.validate();
   }

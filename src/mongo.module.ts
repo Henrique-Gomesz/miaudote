@@ -20,6 +20,5 @@ import { Env } from './env.types';
       inject: [ConfigService],
     }),
   ],
-  exports: [MongooseModule],
 })
 export class MongoModule {}

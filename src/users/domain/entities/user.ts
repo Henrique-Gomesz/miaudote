@@ -11,8 +11,9 @@ export class User {
     public phone: string,
     public birthday: Date,
     public addresses: Address[],
-    public about?: string,
-    public image?: string,
+    public about: Option<string>,
+    public image: Option<string>,
+    public id: Option<string>,
   ) {}
 
   public getMainAddress(): Option<Address> {
