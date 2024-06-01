@@ -31,8 +31,8 @@ export class UpdateUserDTO {
     const updatedUser = new UpdateUser(
       updateUser.name ? some(updateUser.name) : none,
       updateUser.birthday ? some(updateUser.birthday) : none,
-      updateUser.image ? some(updateUser.image) : none,
       updateUser.about ? some(updateUser.about) : none,
+      updateUser.image ? some(updateUser.image) : none,
     );
 
     return updatedUser;

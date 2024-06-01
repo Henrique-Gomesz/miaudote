@@ -1,9 +1,13 @@
-import { Body, Controller, HttpStatus, Put, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Put, Res, UseGuards } from '@nestjs/common';
 import { ApiResponse } from '@nestjs/swagger';
 import { Response } from 'express';
+import { AuthorizationGuard } from 'src/auth/infrastructure/guard/authorization-guard';
+import { UserPayloadDecorator } from 'src/decorators/user-payload-decorator';
 import { UpdateUserCommand } from 'src/users/domain/commands/update-user-command';
 import { UpdateUserDTO } from './dtos/update-user-dto';
 import { userErrors } from './user-errors';
+import { UserPayload } from 'src/auth/domain/entities/AuthenticatedUser';
+import { UpdateUserResponse } from './response/update-user-response';
 
 @Controller('/user')
 export class UpdateUserController {
@@ -18,18 +22,21 @@ export class UpdateUserController {
     status: 400,
     description: 'something went wrong',
   })
-  async updateUser(@Res() response: Response, @Body() updateUser: UpdateUserDTO): Promise<void> {
+  @UseGuards(AuthorizationGuard)
+  async updateUser(
+    @Res() response: Response,
+    @Body() updateUser: UpdateUserDTO,
+    @UserPayloadDecorator() userPayload: UserPayload,
+  ): Promise<any> {
     this.updateUserCommand.onSuccess = this.onSuccess(response);
     this.updateUserCommand.onError = this.onError(response);
 
-    var id = '6652ba09139a5bd6e64750c6';
-
-    this.updateUserCommand.execute(UpdateUserDTO.toDomain(updateUser), id);
+    this.updateUserCommand.execute(UpdateUserDTO.toDomain(updateUser), userPayload.id);
   }
 
   private onSuccess(res: Response): UpdateUserCommand['onSuccess'] {
-    return () => {
-      return res.status(HttpStatus.OK).send(res);
+    return (user) => {
+      return res.status(HttpStatus.OK).send(UpdateUserResponse.toResponse(user));
     };
   }
 

@@ -8,6 +8,7 @@ import { SaveUserListeners, UserRepository } from 'src/users/domain/repositories
 import { UserDocument, User as UserModel } from '../schemas/user.schema';
 import { UpdateUser } from 'src/users/domain/entities/user-update';
 import { getOrElse } from 'fp-ts/lib/Option';
+import { isNil, remove, unset } from 'lodash';
 
 @Injectable()
 export class MongodbUserRepository extends UserRepository {
@@ -33,12 +34,20 @@ export class MongodbUserRepository extends UserRepository {
   }
 
   async updateUserById(userInfo: UpdateUser, id: string): Promise<Option<User>> {
-    const user = await this.userModel.findByIdAndUpdate(id, {
+    const update = {
       name: isNone(userInfo.name) ? undefined : userInfo.name.value,
       image: isNone(userInfo.image) ? undefined : userInfo.image.value,
-      birthday: isNone(userInfo.birthday) ? undefined : userInfo.birthday.value,
+      birthday: isNone(userInfo.birthday) ? undefined : new Date(userInfo.birthday.value),
       about: isNone(userInfo.about) ? undefined : userInfo.about.value,
+    };
+
+    Object.entries(update).forEach(([key, value]) => {
+      if (isNil(value)) {
+        unset(update, key);
+      }
     });
+
+    const user = await this.userModel.findByIdAndUpdate(id, update, { new: true });
 
     return user ? some(this.toDomain(user)) : none;
   }
