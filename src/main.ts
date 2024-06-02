@@ -1,8 +1,7 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { TrimPipe } from './pipes/trim-pipe';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   // APP SETUP

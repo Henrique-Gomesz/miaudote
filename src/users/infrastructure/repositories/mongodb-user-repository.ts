@@ -1,14 +1,13 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { fromNullable, isNone, none, Option, some } from 'fp-ts/lib/Option';
+import { isNil, unset } from 'lodash';
 import { Model } from 'mongoose';
 import { Document } from 'src/common/domain/entities/document';
 import { User } from 'src/users/domain/entities/user';
+import { UpdateUser } from 'src/users/domain/entities/user-update';
 import { SaveUserListeners, UserRepository } from 'src/users/domain/repositories/user-repository';
 import { UserDocument, User as UserModel } from '../schemas/user.schema';
-import { UpdateUser } from 'src/users/domain/entities/user-update';
-import { getOrElse } from 'fp-ts/lib/Option';
-import { isNil, remove, unset } from 'lodash';
 
 @Injectable()
 export class MongodbUserRepository extends UserRepository {
