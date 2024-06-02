@@ -1,7 +1,7 @@
 const config = {
   mongodb: {
     // TODO Change (or review) the url to your MongoDB:
-    url: 'mongodb+srv://admin:admin@miaudote.rtjemoz.mongodb.net/?retryWrites=true&w=majority&appName=miaudote',
+    url: process.env.MONGO_URL,
 
     // TODO Change this to your database name:
     databaseName: 'miaudote',
