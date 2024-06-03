@@ -1,4 +1,3 @@
-import { Option, some, none } from 'fp-ts/lib/Option';
 import { isEqual } from 'lodash';
 
 export class State {
@@ -8,11 +7,11 @@ export class State {
     public cities: string[],
   ) {}
 
-  public getCityByName(name: string): Option<string> {
+  public getCityByName(name: string): string | undefined {
     const city = this.cities.find((city) => isEqual(name, city));
 
-    if (city) return some(city);
+    if (city) return city;
 
-    return none;
+    return undefined;
   }
 }

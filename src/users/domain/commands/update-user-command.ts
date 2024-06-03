@@ -1,9 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { noop } from 'lodash';
+import { isNil, noop } from 'lodash';
 import { User } from '../entities/user';
-import { UserRepository } from '../repositories/user-repository';
 import { UpdateUser } from '../entities/user-update';
-import { isNone } from 'fp-ts/lib/Option';
+import { UserRepository } from '../repositories/user-repository';
 
 @Injectable()
 export class UpdateUserCommand {
@@ -15,10 +14,12 @@ export class UpdateUserCommand {
   public async execute(userInfo: UpdateUser, id: string): Promise<void> {
     try {
       const updatedUser = await this.userRepository.updateUserById(userInfo, id);
-      if (isNone(updatedUser)) {
+
+      if (isNil(updatedUser)) {
         return this.onError();
       }
-      this.onSuccess(updatedUser.value);
+
+      this.onSuccess(updatedUser);
     } catch (e) {
       console.log('Erro: ', e);
       Logger.log('[UpdateUserCommand] - Error in updateUserById, error: ', e);

@@ -1,6 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { fromNullable, isNone, none, Option, some } from 'fp-ts/lib/Option';
 import { isNil, unset } from 'lodash';
 import { Model } from 'mongoose';
 import { Document } from 'src/common/domain/entities/document';
@@ -21,23 +20,26 @@ export class MongodbUserRepository extends UserRepository {
       await createUser.save();
       return listeners.onSuccess();
     } catch (error) {
-      Logger.log(JSON.stringify(error));
+      Logger.log(
+        'Erro ao executar o método saveUser de [MongodbUserRepository]: ' +
+          JSON.stringify(error, null, 2),
+      );
       return listeners.onError();
     }
   }
 
-  async getUserByEmail(email: string): Promise<Option<User>> {
+  async getUserByEmail(email: string): Promise<User | undefined> {
     const user = await this.userModel.findOne({ email: email });
 
-    return user ? some(this.toDomain(user)) : none;
+    return isNil(user) ? undefined : this.toDomain(user);
   }
 
-  async updateUserById(userInfo: UpdateUser, id: string): Promise<Option<User>> {
+  async updateUserById(userInfo: UpdateUser, id: string): Promise<User | undefined> {
     const update = {
-      name: isNone(userInfo.name) ? undefined : userInfo.name.value,
-      image: isNone(userInfo.image) ? undefined : userInfo.image.value,
-      birthday: isNone(userInfo.birthday) ? undefined : new Date(userInfo.birthday.value),
-      about: isNone(userInfo.about) ? undefined : userInfo.about.value,
+      name: isNil(userInfo.name) ? undefined : userInfo.name,
+      image: isNil(userInfo.image) ? undefined : userInfo.image,
+      birthday: isNil(userInfo.birthday) ? undefined : new Date(userInfo.birthday),
+      about: isNil(userInfo.about) ? undefined : userInfo.about,
     };
 
     Object.entries(update).forEach(([key, value]) => {
@@ -48,7 +50,7 @@ export class MongodbUserRepository extends UserRepository {
 
     const user = await this.userModel.findByIdAndUpdate(id, update, { new: true });
 
-    return user ? some(this.toDomain(user)) : none;
+    return isNil(user) ? undefined : this.toDomain(user);
   }
 
   private toDomain(user: UserDocument): User {
@@ -60,9 +62,9 @@ export class MongodbUserRepository extends UserRepository {
       user.phone,
       user.birthday,
       user.addresses,
-      fromNullable(user.about),
-      fromNullable(user.image),
-      fromNullable(user.id),
+      user.about,
+      user.image,
+      user.id,
     );
   }
 }

@@ -1,3 +1,5 @@
+import { ApiProperty } from '@nestjs/swagger';
+import { Type } from 'class-transformer';
 import {
   IsDateString,
   IsEmail,
@@ -9,13 +11,10 @@ import {
 } from 'class-validator';
 import { Document } from 'src/common/domain/entities/document';
 import { User } from 'src/users/domain/entities/user';
-import { DocumentValidation } from '../validations/document-validation';
-import { ApiProperty } from '@nestjs/swagger';
-import { CreateUserAddressDto } from './create-user-address-dto';
-import { Type } from 'class-transformer';
-import { CredentialValidation } from '../validations/credential-validation';
 import { BirthdayValidation } from '../validations/birthday-validation';
-import { none } from 'fp-ts/lib/Option';
+import { CredentialValidation } from '../validations/credential-validation';
+import { DocumentValidation } from '../validations/document-validation';
+import { CreateUserAddressDto } from './create-user-address-dto';
 
 export class CreateUserDto {
   @ApiProperty()
@@ -60,9 +59,9 @@ export class CreateUserDto {
       createUserDto.phone,
       new Date(createUserDto.birthday),
       [CreateUserAddressDto.toDomain(createUserDto.address)],
-      none,
-      none,
-      none,
+      undefined,
+      undefined,
+      undefined,
     );
 
     return user;

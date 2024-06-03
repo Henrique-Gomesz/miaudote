@@ -1,4 +1,3 @@
-import { getOrElse } from 'fp-ts/lib/Option';
 import { User } from 'src/users/domain/entities/user';
 
 export class UpdateUserResponse {
@@ -9,8 +8,8 @@ export class UpdateUserResponse {
       email: user.email,
       phone: user.phone,
       birthday: user.birthday,
-      image: getOrElse<string | undefined>(() => undefined)(user.image),
-      about: getOrElse<string | undefined>(() => undefined)(user.about),
+      about: user.about,
+      image: user.image,
     };
   }
 }

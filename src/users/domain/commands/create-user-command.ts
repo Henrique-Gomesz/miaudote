@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { isNone, Option } from 'fp-ts/Option';
-import { noop } from 'lodash';
+
+import { isNil, noop } from 'lodash';
 import { PasswordService } from 'src/common/domain/services/credential-service';
 import { StateRepository } from 'src/states/domain/repositories/states-repository';
 import { Address } from '../entities/address';
@@ -34,16 +34,16 @@ export class CreateUserCommand {
     });
   }
 
-  private async validateUserAddress(address: Option<Address>): Promise<boolean> {
-    if (isNone(address)) return false;
+  private async validateUserAddress(address?: Address): Promise<boolean> {
+    if (isNil(address)) return false;
 
-    const userState = await this.stateRepository.getStateByName(address.value.state);
+    const userState = await this.stateRepository.getStateByName(address.state);
 
-    if (isNone(userState)) return false;
+    if (isNil(userState)) return false;
 
-    const userCity = userState.value.getCityByName(address.value.city);
+    const userCity = userState.getCityByName(address.city);
 
-    if (isNone(userCity)) return false;
+    if (isNil(userCity)) return false;
 
     return true;
   }
