@@ -6,25 +6,25 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
-  @Prop({ required: true })
+  @Prop({ required: true, type: String })
   name: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true, type: String })
   document: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: String })
   password: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true, unique: true, type: String })
   email: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: String })
   phone: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: String })
   about?: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, type: String })
   image?: string;
 
   @Prop({ type: Date, required: true })

@@ -29,21 +29,27 @@ export class CreateUserCommand {
     user.password = await this.passwordService.hashPassword(user.password);
 
     return await this.userRepository.saveUser(user, {
-      onError: this.onError,
-      onSuccess: this.onSuccess,
+      onError: () => this.onError(),
+      onSuccess: () => this.onSuccess(),
     });
   }
 
   private async validateUserAddress(address?: Address): Promise<boolean> {
-    if (isNil(address)) return false;
+    if (isNil(address)) {
+      return false;
+    }
 
     const userState = await this.stateRepository.getStateByName(address.state);
 
-    if (isNil(userState)) return false;
+    if (isNil(userState)) {
+      return false;
+    }
 
     const userCity = userState.getCityByName(address.city);
 
-    if (isNil(userCity)) return false;
+    if (isNil(userCity)) {
+      return false;
+    }
 
     return true;
   }

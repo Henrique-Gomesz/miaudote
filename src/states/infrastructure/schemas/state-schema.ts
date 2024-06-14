@@ -4,10 +4,10 @@ export type StateDocument = HydratedDocument<State>;
 
 @Schema()
 export class State {
-  @Prop({ required: true })
+  @Prop({ required: true, type: String })
   name: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, type: String })
   acronym: string;
 
   @Prop({ required: true, type: [String] })
