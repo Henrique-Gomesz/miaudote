@@ -1,7 +1,7 @@
 import csvParser from 'csv-parser';
 import { createReadStream } from 'fs';
 
-interface UserCSV {
+interface UserCreateCSV {
   name: string;
   document: string;
   password: string;
@@ -19,9 +19,28 @@ interface UserCSV {
   image: string;
 }
 
-export function readCSVFile(filePath: string): Promise<UserCSV[]> {
+interface UserUpdateCSV {
+  id: string;
+  name?: string;
+  birthday?: string;
+  about?: string;
+  image?: string;
+}
+
+export function readCreateCSVFile(filePath: string): Promise<UserCreateCSV[]> {
   return new Promise((resolve, reject) => {
-    const results: UserCSV[] = [];
+    const results: UserCreateCSV[] = [];
+    createReadStream(filePath)
+      .pipe(csvParser())
+      .on('data', (data) => results.push(data))
+      .on('end', () => resolve(results))
+      .on('error', (error) => reject(error));
+  });
+}
+
+export function readUpdateCSVFile(filePath: string): Promise<UserUpdateCSV[]> {
+  return new Promise((resolve, reject) => {
+    const results: UserUpdateCSV[] = [];
     createReadStream(filePath)
       .pipe(csvParser())
       .on('data', (data) => results.push(data))
