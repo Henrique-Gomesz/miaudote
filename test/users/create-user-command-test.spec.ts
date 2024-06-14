@@ -6,14 +6,14 @@ import { CreateUserCommand } from 'src/users/domain/commands/create-user-command
 import { Address } from 'src/users/domain/entities/address';
 import { User } from 'src/users/domain/entities/user';
 import { InMemoryStateRepository } from 'test/address/doubles/in-memory-state-repository';
-import { readCSVFile } from 'test/utils/csv-reader';
+import { readCreateCSVFile } from 'test/utils/csv-reader';
 import { InMemoryUserRepository } from './doubles/in-memory-user-repository';
 
 describe('CreateUserCommand', () => {
   let user: User;
 
   beforeAll(async () => {
-    const row = await readCSVFile('users.csv');
+    const row = await readCreateCSVFile('users.csv');
 
     const csvUser = row.pop();
 
