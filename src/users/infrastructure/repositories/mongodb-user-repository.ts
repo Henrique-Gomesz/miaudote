@@ -1,9 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { fromNullable, none, Option, some } from 'fp-ts/lib/Option';
+import { isNil, unset } from 'lodash';
 import { Model } from 'mongoose';
 import { Document } from 'src/common/domain/entities/document';
 import { User } from 'src/users/domain/entities/user';
+import { UpdateUser } from 'src/users/domain/entities/user-update';
 import { SaveUserListeners, UserRepository } from 'src/users/domain/repositories/user-repository';
 import { UserDocument, User as UserModel } from '../schemas/user.schema';
 
@@ -19,15 +20,37 @@ export class MongodbUserRepository extends UserRepository {
       await createUser.save();
       return listeners.onSuccess();
     } catch (error) {
-      Logger.log(JSON.stringify(error));
+      Logger.log(
+        'Erro ao executar o método saveUser de [MongodbUserRepository]: ' +
+          JSON.stringify(error, null, 2),
+      );
       return listeners.onError();
     }
   }
 
-  async getUserByEmail(email: string): Promise<Option<User>> {
+  async getUserByEmail(email: string): Promise<User | undefined> {
     const user = await this.userModel.findOne({ email: email });
 
-    return user ? some(this.toDomain(user)) : none;
+    return isNil(user) ? undefined : this.toDomain(user);
+  }
+
+  async updateUserById(userInfo: UpdateUser, id: string): Promise<User | undefined> {
+    const update = {
+      name: isNil(userInfo.name) ? undefined : userInfo.name,
+      image: isNil(userInfo.image) ? undefined : userInfo.image,
+      birthday: isNil(userInfo.birthday) ? undefined : new Date(userInfo.birthday),
+      about: isNil(userInfo.about) ? undefined : userInfo.about,
+    };
+
+    Object.entries(update).forEach(([key, value]) => {
+      if (isNil(value)) {
+        unset(update, key);
+      }
+    });
+
+    const user = await this.userModel.findByIdAndUpdate(id, update, { new: true });
+
+    return isNil(user) ? undefined : this.toDomain(user);
   }
 
   private toDomain(user: UserDocument): User {
@@ -39,9 +62,9 @@ export class MongodbUserRepository extends UserRepository {
       user.phone,
       user.birthday,
       user.addresses,
-      fromNullable(user.about),
-      fromNullable(user.image),
-      fromNullable(user.id),
+      user.about,
+      user.image,
+      user.id,
     );
   }
 }

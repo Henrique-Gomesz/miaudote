@@ -9,6 +9,8 @@ import { UserRepository } from './domain/repositories/user-repository';
 import { MongodbUserRepository } from './infrastructure/repositories/mongodb-user-repository';
 import { State, StateSchema } from './infrastructure/schemas/state.schema';
 import { User, UserSchema } from './infrastructure/schemas/user.schema';
+import { UpdateUserController } from './infrastructure/controllers/update-user-controller';
+import { UpdateUserCommand } from './domain/commands/update-user-command';
 
 const UserRepositoryProvider = { provide: UserRepository, useClass: MongodbUserRepository };
 
@@ -21,8 +23,8 @@ const UserRepositoryProvider = { provide: UserRepository, useClass: MongodbUserR
       { name: State.name, schema: StateSchema },
     ]),
   ],
-  controllers: [CreateUserController],
-  providers: [CreateUserCommand, UserRepositoryProvider],
+  controllers: [CreateUserController, UpdateUserController],
+  providers: [CreateUserCommand, UpdateUserCommand, UserRepositoryProvider],
   exports: [UserRepositoryProvider],
 })
 export class UsersModule {}

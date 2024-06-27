@@ -1,6 +1,5 @@
 import { Document } from 'src/common/domain/entities/document';
 import { Address } from './address';
-import { Option, some, none } from 'fp-ts/lib/Option';
 
 export class User {
   public constructor(
@@ -11,16 +10,16 @@ export class User {
     public phone: string,
     public birthday: Date,
     public addresses: Address[],
-    public about: Option<string>,
-    public image: Option<string>,
-    public id: Option<string>,
+    public about?: string,
+    public image?: string,
+    public id?: string,
   ) {}
 
-  public getMainAddress(): Option<Address> {
+  public getMainAddress(): Address | undefined {
     const mainAddress = this.addresses.find((address) => address.main);
 
-    if (mainAddress) return some(mainAddress);
+    if (mainAddress) return mainAddress;
 
-    return none;
+    return undefined;
   }
 }

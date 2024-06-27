@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { noop } from 'lodash';
-import { AuthService } from '../service/auth-service';
-import { PasswordService } from 'src/common/domain/services/credential-service';
+import { isNil, noop } from 'lodash';
 import { Credential } from 'src/auth/domain/entities/credential';
+import { PasswordService } from 'src/common/domain/services/credential-service';
 import { UserRepository } from 'src/users/domain/repositories/user-repository';
-import { getOrElse, isNone } from 'fp-ts/lib/Option';
+import { AuthService } from '../service/auth-service';
 
 @Injectable()
 export class LoginCommand {
@@ -20,13 +19,13 @@ export class LoginCommand {
   public async execute(credential: Credential): Promise<void> {
     const user = await this.userRepository.getUserByEmail(credential.email);
 
-    if (isNone(user)) return this.onError();
+    if (isNil(user)) return this.onError();
 
-    if (!(await this.passwordService.comparePasswords(credential.password, user.value.password)))
+    if (!(await this.passwordService.comparePasswords(credential.password, user.password)))
       return this.onError();
 
     const token = await this.authService.generateToken({
-      id: getOrElse(() => '')(user.value.id),
+      id: user.id,
     });
 
     return this.onSuccess(token);

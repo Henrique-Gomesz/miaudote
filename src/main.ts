@@ -1,8 +1,7 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
+import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { TrimPipe } from './pipes/trim-pipe';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   // APP SETUP
@@ -21,7 +20,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   // VALIDATION SETUP
-  app.useGlobalPipes(new ValidationPipe({}), new TrimPipe());
+  app.useGlobalPipes(new ValidationPipe());
 
   // EXPOSE APPLICATION
   await app.listen(3000);

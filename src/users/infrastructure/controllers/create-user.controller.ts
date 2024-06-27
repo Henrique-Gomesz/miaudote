@@ -5,11 +5,11 @@ import { CreateUserCommand } from 'src/users/domain/commands/create-user-command
 import { CreateUserDto } from './dtos/create-user-dto';
 import { userErrors } from './user-errors';
 
-@Controller()
+@Controller('/user')
 export class CreateUserController {
   constructor(private readonly createUserCommand: CreateUserCommand) {}
 
-  @Post('/users')
+  @Post()
   @ApiResponse({
     status: 201,
     description: 'successfully saved user',
