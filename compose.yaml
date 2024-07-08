@@ -1,4 +1,4 @@
-name: miaudote
+name: miaudote-compose
 
 services:
   app:
@@ -6,18 +6,28 @@ services:
     image: node:21
     container_name: app-container
     volumes:
-      - .:/app
+      - ./:/app
     ports:
-      - "3000:3000"
-    command: ["sh", "-c", "yarn install && yarn run start:dev"]
-   
+      - '3000:3000'
+    expose:
+      - 3000
+    command: ['sh', '-c', 'yarn install && yarn run start:dev']
+    depends_on:
+      - database
+    env_file:
+      - .env
+
   database:
-    working_dir: /database
     image: mongo
     volumes:
-      - .:/database
+      - mongodb:/data/db
     ports:
-      - "27017:27017"
+      - '27017:27017'
+    expose:
+      - 27017
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
+
+volumes:
+  mongodb:
