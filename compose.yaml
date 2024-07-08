@@ -1,0 +1,23 @@
+name: miaudote
+
+services:
+  app:
+    working_dir: /app
+    image: node:21
+    container_name: app-container
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    command: ["sh", "-c", "yarn install && yarn run start:dev"]
+   
+  database:
+    working_dir: /database
+    image: mongo
+    volumes:
+      - .:/database
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
