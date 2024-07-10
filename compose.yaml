@@ -11,23 +11,17 @@ services:
       - '3000:3000'
     expose:
       - 3000
-    command: ['sh', '-c', 'yarn install && yarn run start:dev']
+    command: ['sh', '-c' ,'npm i -g bun migrate-mongo && bun install && bun run start:dev']
     depends_on:
       - database
     env_file:
       - .env
-
   database:
     image: mongo
+    restart: always
     volumes:
-      - mongodb:/data/db
+      - mongodbvolume:/data/db
     ports:
       - '27017:27017'
-    expose:
-      - 27017
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: admin
-
 volumes:
-  mongodb:
+  mongodbvolume:
