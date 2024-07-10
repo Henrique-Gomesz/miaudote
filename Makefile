@@ -1,15 +1,15 @@
 
 up:
-	docker-compose up -d
+	docker compose up -d
 
 up-logs:
-	docker-compose up	
+	docker compose up	
 
 down:
-	docker-compose down
+	docker compose down
 
 migrate-up:
-	docker exec app-container sh -c /app/migrations/migrate-up.sh
+	docker exec app-container sh -c "migrate-mongo up"
 
 migrate-down:
-	docker exec app-container sh -c cd /migrations && migrate-mongo down
+	docker exec app-container sh -c "migrate-mongo down"
