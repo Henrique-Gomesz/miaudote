@@ -1,0 +1,27 @@
+name: miaudote-compose
+
+services:
+  app:
+    working_dir: /app
+    image: node:21
+    container_name: app-container
+    volumes:
+      - ./:/app
+    ports:
+      - '3000:3000'
+    expose:
+      - 3000
+    command: ['sh', '-c' ,'npm i -g bun migrate-mongo && bun install && bun run start:dev']
+    depends_on:
+      - database
+    env_file:
+      - .env
+  database:
+    image: mongo
+    restart: always
+    volumes:
+      - mongodbvolume:/data/db
+    ports:
+      - '27017:27017'
+volumes:
+  mongodbvolume:

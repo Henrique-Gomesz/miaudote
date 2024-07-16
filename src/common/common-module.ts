@@ -15,10 +15,7 @@ const BcryptProvider = {
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
-        MONGO_USERNAME: Joi.string().required(),
-        MONGO_PASSWORD: Joi.string().required(),
-        MONGO_DATABASE: Joi.string().required(),
-        MONGO_HOST: Joi.string().required(),
+        MONGO_URL: Joi.string().required(),
         JWT_SECRET: Joi.string().required(),
       }),
     }),

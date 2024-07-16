@@ -7,14 +7,11 @@ import { Env } from './env.types';
   imports: [
     MongooseModule.forRootAsync({
       useFactory: async (configService: ConfigService) => {
-        const username = configService.get(Env.MONGO_USERNAME);
-        const password = configService.get(Env.MONGO_PASSWORD);
-        const database = configService.get(Env.MONGO_DATABASE);
-        const host = configService.get(Env.MONGO_HOST);
-
+        const url = configService.get(Env.MONGO_URL) as string;
+        const dbName = configService.get(Env.DB_NAME) as string;
         return {
-          uri: `mongodb+srv://${username}:${password}@${host}`,
-          dbName: database,
+          uri: url,
+          dbName,
         };
       },
       inject: [ConfigService],
