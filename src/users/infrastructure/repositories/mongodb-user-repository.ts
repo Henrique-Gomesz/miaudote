@@ -7,6 +7,8 @@ import { User } from 'src/users/domain/entities/user';
 import { UpdateUser } from 'src/users/domain/entities/user-update';
 import { SaveUserListeners, UserRepository } from 'src/users/domain/repositories/user-repository';
 import { UserDocument, User as UserModel } from '../schemas/user.schema';
+import { Address } from 'src/users/domain/entities/address';
+import { UpdateAddress } from 'src/users/domain/entities/address-update';
 
 @Injectable()
 export class MongodbUserRepository extends UserRepository {
@@ -51,6 +53,17 @@ export class MongodbUserRepository extends UserRepository {
     const user = await this.userModel.findByIdAndUpdate(id, update, { new: true });
 
     return isNil(user) ? undefined : this.toDomain(user);
+  }
+
+
+  //TODO: Validar se está funcionando.
+  async updateAddressById(address: UpdateAddress, id: string): Promise<Address | undefined> {
+      const user = await this.userModel.findOne({id: id});
+
+      user.address.splice(address.id, address);
+
+      await this.userModel.updateOne(id, {address: address});
+
   }
 
   private toDomain(user: UserDocument): User {
